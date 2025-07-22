@@ -9,9 +9,7 @@
 #include "drv_can.h"
 #include "dvc_motor.h"
 #include "alg_math.h"
-#include "dvc_serialplot.h"
 
-extern Class_Serialplot* serialplot;
 extern Struct_Motor_C620_Object Joint3;
 
 #endif

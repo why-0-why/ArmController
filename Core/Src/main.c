@@ -183,9 +183,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-  if (htim->Instance == TIM7) {
-    Serialplot_TIM_Write_PeriodElapsedCallback(serialplot);
-  }
+
   /* USER CODE END Callback 1 */
 }
 
