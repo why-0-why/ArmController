@@ -1,0 +1,29 @@
+
+GraphedExpression="(Joint3).Now_Angle", Color=#a00909
+GraphedExpression="(Joint1).Now_Angle", Color=#09a01b
+GraphedExpression="(Joint2).Now_Angle", Color=#09a087
+OpenDocument="stm32f4xx_it.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Core/Src/stm32f4xx_it.c", Line=76
+OpenDocument="stm32f4xx_hal_rcc.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c", Line=919
+OpenDocument="ReadTask.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/User/Task/ReadTask.c", Line=0
+OpenDocument="ReadTask.h", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/User/Task/ReadTask.h", Line=0
+OpenDocument="stm32f4xx_hal_gpio.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c", Line=375
+OpenDocument="main.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Core/Src/main.c", Line=58
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=0, w=300, h=693, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=692, h=512, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Memory 1", DockArea=BOTTOM, x=3, y=0, w=625, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=692, h=180, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=463, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=BOTTOM, x=2, y=0, w=1054, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="784;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="853;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="867;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=415, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+TableHeader="Source Files", SortCol="File", SortOrder="DESCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[240;100;100;100;959]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (Joint3).Now_Angle";" (Joint1).Now_Angle";" (Joint2).Now_Angle"], ColWidths=[100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[168;100;110;110;102;110;100;118;118]
+TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[100;118;259]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[198;100;100;273]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[26;26;26;26]
+WatchedExpression="Joint1", Window=Watched Data 1
+WatchedExpression="Joint2", Window=Watched Data 1
+WatchedExpression="Joint3", Window=Watched Data 1
