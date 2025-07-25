@@ -8,8 +8,6 @@
 //user头文件
 #include "drv_can.h"
 #include "dvc_motor.h"
-#include "alg_math.h"
-
-extern Struct_Motor_C620_Object Joint3;
+// extern Struct_Motor_C620_Object Joint3;
 
 #endif

@@ -1,31 +1,55 @@
-#ifndef DRV_MOTOR_H
-#define DRV_MOTOR_H
+/**
+ * @file dvc_motor.h
+ * @author yssickjgd (1345578933@qq.com)
+ * @brief CAN电机配置与操作
+ * @version 0.1
+ * @date 2022-08-03
+ *
+ * @copyright USTC-RoboWalker (c) 2022
+ *
+ */
+
+#ifndef DVC_MOTOR_H
+#define DVC_MOTOR_H
 
 /* Includes ------------------------------------------------------------------*/
 
-#include "stm32f4xx_hal.h"
-#include "../Drive/drv_can.h"
-#include "alg_math.h"
+#include "drv_can.h"
+#include "alg_pid.h"
+
 
 /* Exported macros -----------------------------------------------------------*/
 
+// deg换算到rad
+#define DEG_TO_RAD (PI / 180.0f)
+// 摄氏度换算到开氏度
+#define CELSIUS_TO_KELVIN (273.15f)
+// 圆周率PI
+#define PI (3.14159265358979323846f)
+
+// RPM换算到rad/s
+#define RPM_TO_RADPS (2.0f * PI / 60.0f)
+
 /* Exported types ------------------------------------------------------------*/
+#ifdef __cplusplus//CAPI
+extern "C" {
+#endif
 
 /**
  * @brief 电机状态
  *
  */
-typedef  enum Enum_CAN_Motor_Status
+enum Enum_CAN_Motor_Status
 {
     CAN_Motor_Status_DISABLE = 0,
     CAN_Motor_Status_ENABLE,
-} Enum_CAN_Motor_Status;
+};
 
 /**
  * @brief CAN电机的ID枚举类型
  *
  */
-typedef enum Enum_CAN_Motor_ID
+enum Enum_CAN_Motor_ID
 {
     CAN_Motor_ID_UNDEFINED = 0,
     CAN_Motor_ID_0x201,
@@ -39,96 +63,437 @@ typedef enum Enum_CAN_Motor_ID
     CAN_Motor_ID_0x209,
     CAN_Motor_ID_0x20A,
     CAN_Motor_ID_0x20B,
-} Enum_CAN_Motor_ID;
+};
 
 /**
  * @brief CAN电机的ID分配情况
  *
  */
-typedef enum Enum_CAN_Motor_ID_Status
+enum Enum_CAN_Motor_ID_Status
 {
     CAN_Motor_ID_Status_FREE = 0,
     CAN_Motor_ID_Status_ALLOCATED,
-} Enum_CAN_Motor_ID_Status;
+};
 
 /**
  * @brief 电机控制方式
  *
  */
-typedef enum Enum_Control_Method
+enum Enum_Control_Method
 {
     Control_Method_OPENLOOP = 0,
     Control_Method_TORQUE,
     Control_Method_OMEGA,
     Control_Method_ANGLE,
-} Enum_Control_Method;
+};
+
+/* 前向声明 */
+
+typedef struct Class_Motor_GM6020 Class_Motor_GM6020;
+typedef struct Class_Motor_C610 Class_Motor_C610;
+typedef struct Class_Motor_C620 Class_Motor_C620;
+
+/* 创建/销毁/初始化对象 */
+
+Class_Motor_C610* Motor_C610_Creat(void);
+void Motor_C610_Init(
+    Class_Motor_C610* motor,
+    CAN_HandleTypeDef* hcan,
+    enum Enum_CAN_Motor_ID motor_id,
+    enum Enum_Control_Method control_method,
+    float gearbox_rate,
+    float torque_max
+);
+void Motor_C610_Destroy(Class_Motor_C610* motor);
+
+/* 类内类指针获取 */
+Class_PID* Motor_C610_Get_PID_Angle(Class_Motor_C610* motor);
+Class_PID* Motor_C610_Get_PID_Omega(Class_Motor_C610* motor);
+
+/* 类函数 */
+uint16_t Motor_C610_Get_Output_Max(Class_Motor_C610* motor);
+enum Enum_CAN_Motor_Status Motor_C610_Get_CAN_Motor_Status(Class_Motor_C610* motor);
+float Motor_C610_Get_Now_Angle(Class_Motor_C610* motor);
+float Motor_C610_Get_Now_Omega(Class_Motor_C610* motor);
+float Motor_C610_Get_Now_Torque(Class_Motor_C610* motor);
+uint8_t Motor_C610_Get_Now_Temperature(Class_Motor_C610* motor);
+enum Enum_Control_Method Motor_C610_Get_Control_Method(Class_Motor_C610* motor);
+float Motor_C610_Get_Target_Angle(Class_Motor_C610* motor);
+float Motor_C610_Get_Target_Omega(Class_Motor_C610* motor);
+float Motor_C610_Get_Target_Torque(Class_Motor_C610* motor);
+float Motor_C610_Get_Out(Class_Motor_C610* motor);
+
+void Motor_C610_Set_Control_Method(Class_Motor_C610* motor, enum Enum_Control_Method control_method);
+void Motor_C610_Set_Target_Angle(Class_Motor_C610* motor, float target_angle);
+void Motor_C610_Set_Target_Omega(Class_Motor_C610* motor, float target_omega);
+void Motor_C610_Set_Target_Torque(Class_Motor_C610* motor, float target_torque);
+void Motor_C610_Set_Out(Class_Motor_C610* motor, float out);
+
+void Motor_C610_CAN_RxCpltCallback(Class_Motor_C610* motor, uint8_t* rx_data);
+void Motor_C610_TIM_Alive_PeriodElapsedCallback(Class_Motor_C610* motor);
+void Motor_C610_TIM_PID_PeriodElapsedCallback(Class_Motor_C610* motor);
+
+
+#ifdef __cplusplus//CAPI
+}
+#endif
+
+#ifdef __cplusplus
 /**
- * @brief 3508电机结构体
+ * @brief GM6020无刷电机, 单片机控制输出电压
  *
  */
+class Class_Motor_GM6020
+{
+public:
+    // PID角度环控制
+    Class_PID PID_Angle;
+    // PID角速度环控制
+    Class_PID PID_Omega;
+    // PID扭矩环控制
+    Class_PID PID_Torque;
 
-typedef struct Struct_Motor_C620_Object{
+    void Init(CAN_HandleTypeDef* __hcan, Enum_CAN_Motor_ID __CAN_ID,
+              Enum_Control_Method __Control_Method = Control_Method_ANGLE, int32_t __Encoder_Offset = 0,
+              float __Omega_Max = 320.0f * RPM_TO_RADPS);
 
-    void (*CAN_RxCpltCallback)(struct Struct_Motor_C620_Object *motor, const uint8_t *Rx_Data);
-    void (*Output)(struct Struct_Motor_C620_Object *motor);
-    /*常量*/
+    uint16_t Get_Output_Max();
+    Enum_CAN_Motor_Status Get_CAN_Motor_Status();
+    float Get_Now_Angle();
+    float Get_Now_Omega();
+    float Get_Now_Torque();
+    uint8_t Get_Now_Temperature();
+    Enum_Control_Method Get_Control_Method();
+    float Get_Target_Angle();
+    float Get_Target_Omega();
+    float Get_Target_Torque();
+    float Get_Out();
+
+    void Set_Control_Method(Enum_Control_Method __Control_Method);
+    void Set_Target_Angle(float __Target_Angle);
+    void Set_Target_Omega(float __Target_Omega);
+    void Set_Target_Torque(float __Target_Torque);
+    void Set_Out(float __Out);
+
+    void CAN_RxCpltCallback(uint8_t* Rx_Data);
+    void TIM_Alive_PeriodElapsedCallback();
+    void TIM_PID_PeriodElapsedCallback();
+
+protected:
+    // 初始化相关变量
+
     // 绑定的CAN
-    Struct_CAN_Manage_Object *CAN_Manage_Object;
+    Struct_CAN_Manage_Object* CAN_Manage_Object;
     // 收数据绑定的CAN ID, C6系列0x201~0x208, GM系列0x205~0x20b
     Enum_CAN_Motor_ID CAN_ID;
     // 发送缓存区
-    uint8_t *CAN_Tx_Data;
+    uint8_t* CAN_Tx_Data;
+    // 编码器偏移
+    uint32_t Encoder_Offset;
+    // 最大速度, 需根据不同负载测量后赋值, 也就开环输出用得到, 不过我感觉应该没有奇葩喜欢开环输出这玩意
+    float Omega_Max;
 
-    float Gearbox_Rate;// 减速比, 默认带减速箱
-    float Torque_Max;// 最大扭矩, 需根据不同负载测量后赋值, 也就开环和扭矩环输出用得到, 不过我感觉应该没有奇葩喜欢开环输出这玩意
+    // 常量
 
-    uint16_t Encoder_Num_Per_Round;// 一圈编码器刻度
-    // 最大输出扭矩
-    uint16_t Output_Max;
+    // 一圈编码器刻度
+    uint16_t Encoder_Num_Per_Round = 8192;
+    // 最大输出电压
+    uint16_t Output_Max = 30000;
+
+    // 内部变量
 
     // 当前时刻的电机接收flag
-    uint32_t Flag;
+    uint32_t Flag = 0;
     // 前一时刻的电机接收flag
-    uint32_t Pre_Flag;
-    /*接收缓存*/
-    uint16_t Rx_Encoder;// 接收的编码器位置, 0~8191
-    int16_t Rx_Omega;// 接收的速度, rpm
-    int16_t Rx_Torque;// 接收的扭矩, 目标的扭矩, -30000~30000
-    uint16_t Rx_Temperature;// 接收的温度, 摄氏度
+    uint32_t Pre_Flag = 0;
 
-    /*数据缓存*/
-    uint16_t Pre_Encoder;// 之前的编码器位置
+    // 接收的编码器位置, 0~8191
+    uint16_t Rx_Encoder = 0;
+    // 接收的速度, rpm
+    int16_t Rx_Omega = 0;
+    // 接收的扭矩, 目标的扭矩, -30000~30000
+    int16_t Rx_Torque = 0;
+    // 接收的温度, 摄氏度
+    uint16_t Rx_Temperature = 0;
 
-    /*当前状态*/
-    int32_t Total_Encoder;// 总编码器位置
-    int32_t Total_Round;// 总圈数
+    // 之前的编码器位置
+    uint16_t Pre_Encoder = 0;
+    // 总编码器位置
+    int32_t Total_Encoder = 0;
+    // 总圈数
+    int32_t Total_Round = 0;
+
+    // 读变量
+
     // 电机状态
-    Enum_CAN_Motor_Status CAN_Motor_Status;
+    Enum_CAN_Motor_Status CAN_Motor_Status = CAN_Motor_Status_DISABLE;
 
-    float Now_Angle;// 当前的角度, rad
-    float Now_Omega;// 当前的速度, rad/s
-    float Now_Torque;// 当前的扭矩, 直接采用反馈值
-    uint8_t Now_Temperature;// 当前的温度, 摄氏度
+    // 当前的角度, rad
+    float Now_Angle = 0.0f;
+    // 当前的速度, rad/s
+    float Now_Omega = 0.0f;
+    // 当前的扭矩, 直接采用反馈值
+    float Now_Torque = 0.0f;
+    // 当前的温度, 摄氏度
+    uint8_t Now_Temperature = 0;
+
+    // 写变量
+
+    // 读写变量
 
     // 电机控制方式
-    Enum_Control_Method Control_Method;
+    Enum_Control_Method Control_Method = Control_Method_ANGLE;
     // 目标的角度, rad
-    float Target_Angle;
+    float Target_Angle = 0.0f;
     // 目标的速度, rad/s
-    float Target_Omega;
+    float Target_Omega = 0.0f;
     // 目标的扭矩, 直接采用反馈值
-    float Target_Torque;
+    float Target_Torque = 0.0f;
     // 输出量
-    float Out;
-    // CAN通信接收回调函数指针
+    float Out = 0.0f;
 
+    // 内部函数
 
-}Struct_Motor_C620_Object;
+    void Output();
+};
 
-/* 接口函数声明 */
-void Motor_C620_Output(Struct_Motor_C620_Object *motor);
-void Motor_C620_CAN_RxCpltCallback(Struct_Motor_C620_Object *motor, const uint8_t *Rx_Data);
-void Motor_C620_Init(Struct_Motor_C620_Object *motor);
-// 电机结构体定义
+/**
+ * @brief C610无刷电调, 自带扭矩环, 单片机控制输出扭矩
+ *
+ */
+class Class_Motor_C610
+{
+public:
+    // PID角度环控制
+    Class_PID PID_Angle;
+    // PID角速度环控制
+    Class_PID PID_Omega;
+
+    void Init(CAN_HandleTypeDef* __hcan, Enum_CAN_Motor_ID __CAN_ID,
+              Enum_Control_Method __Control_Method = Control_Method_OMEGA, float __Gearbox_Rate = 36.0f,
+              float __Torque_Max = 10000.0f);
+
+    uint16_t Get_Output_Max();
+    Enum_CAN_Motor_Status Get_CAN_Motor_Status();
+    float Get_Now_Angle();
+    float Get_Now_Omega();
+    float Get_Now_Torque();
+    uint8_t Get_Now_Temperature();
+    Enum_Control_Method Get_Control_Method();
+    float Get_Target_Angle();
+    float Get_Target_Omega();
+    float Get_Target_Torque();
+    float Get_Out();
+
+    void Set_Control_Method(Enum_Control_Method __Control_Method);
+    void Set_Target_Angle(float __Target_Angle);
+    void Set_Target_Omega(float __Target_Omega);
+    void Set_Target_Torque(float __Target_Torque);
+    void Set_Out(float __Out);
+
+    void CAN_RxCpltCallback(uint8_t* Rx_Data);
+    void TIM_Alive_PeriodElapsedCallback();
+    void TIM_PID_PeriodElapsedCallback();
+
+protected:
+    // 初始化相关常量
+
+    // 绑定的CAN
+    Struct_CAN_Manage_Object* CAN_Manage_Object;
+    // 收数据绑定的CAN ID, C6系列0x201~0x208, GM系列0x205~0x20b
+    Enum_CAN_Motor_ID CAN_ID;
+    // 发送缓存区
+    uint8_t* CAN_Tx_Data;
+    // 减速比, 默认带减速箱
+    float Gearbox_Rate = 36.0f;
+    // 最大扭矩, 需根据不同负载测量后赋值, 也就开环和扭矩环输出用得到, 不过我感觉应该没有奇葩喜欢开环输出这玩意
+    float Torque_Max = 10000.0f;
+
+    // 常量
+
+    // 一圈编码器刻度
+    uint16_t Encoder_Num_Per_Round = 8192;
+    // 最大输出扭矩
+    uint16_t Output_Max = 10000;
+
+    // 内部变量
+
+    // 当前时刻的电机接收flag
+    uint32_t Flag = 0;
+    // 前一时刻的电机接收flag
+    uint32_t Pre_Flag = 0;
+
+    // 接收的编码器位置, 0~8191
+    uint16_t Rx_Encoder = 0;
+    // 接收的速度, rpm
+    int16_t Rx_Omega = 0;
+    // 接收的扭矩, 目标的扭矩, -30000~30000
+    int16_t Rx_Torque = 0;
+    // 接收的温度, 摄氏度
+    uint16_t Rx_Temperature = 0;
+
+    // 之前的编码器位置
+    uint16_t Pre_Encoder = 0;
+    // 总编码器位置
+    int32_t Total_Encoder = 0;
+    // 总圈数
+    int32_t Total_Round = 0;
+
+    // 读变量
+
+    // 电机状态
+    Enum_CAN_Motor_Status CAN_Motor_Status = CAN_Motor_Status_DISABLE;
+
+    // 当前的角度, rad
+    float Now_Angle = 0.0f;
+    // 当前的速度, rad/s
+    float Now_Omega = 0.0f;
+    // 当前的扭矩, 直接采用反馈值
+    float Now_Torque = 0.0f;
+    // 当前的温度, 摄氏度
+    uint8_t Now_Temperature = 0;
+
+    // 写变量
+
+    // 读写变量
+
+    // 电机控制方式
+    Enum_Control_Method Control_Method = Control_Method_ANGLE;
+    // 目标的角度, rad
+    float Target_Angle = 0.0f;
+    // 目标的速度, rad/s
+    float Target_Omega = 0.0f;
+    // 目标的扭矩, 直接采用反馈值
+    float Target_Torque = 0.0f;
+    // 输出量
+    float Out = 0.0f;
+
+    // 内部函数
+
+    void Output();
+};
+
+/**
+ * @brief C620无刷电调, 自带扭矩环, 单片机控制输出扭矩
+ *
+ */
+class Class_Motor_C620
+{
+public:
+    // PID角度环控制
+    Class_PID PID_Angle;
+    // PID角速度环控制
+    Class_PID PID_Omega;
+
+    void Init(CAN_HandleTypeDef* __hcan, Enum_CAN_Motor_ID __CAN_ID,
+              Enum_Control_Method __Control_Method = Control_Method_OMEGA, float __Gearbox_Rate = 3591.0f / 187.0f,
+              float __Torque_Max = 16384.0f);
+
+    uint16_t Get_Output_Max();
+    Enum_CAN_Motor_Status Get_CAN_Motor_Status();
+    float Get_Now_Angle();
+    float Get_Now_Omega();
+    float Get_Now_Torque();
+    uint8_t Get_Now_Temperature();
+    Enum_Control_Method Get_Control_Method();
+    float Get_Target_Angle();
+    float Get_Target_Omega();
+    float Get_Target_Torque();
+    float Get_Out();
+
+    void Set_Control_Method(Enum_Control_Method __Control_Method);
+    void Set_Target_Angle(float __Target_Angle);
+    void Set_Target_Omega(float __Target_Omega);
+    void Set_Target_Torque(float __Target_Torque);
+    void Set_Out(float __Out);
+
+    void CAN_RxCpltCallback(uint8_t* Rx_Data);
+    void TIM_Alive_PeriodElapsedCallback();
+    void TIM_PID_PeriodElapsedCallback();
+
+protected:
+    // 初始化相关变量
+
+    // 绑定的CAN
+    Struct_CAN_Manage_Object* CAN_Manage_Object;
+    // 收数据绑定的CAN ID, C6系列0x201~0x208, GM系列0x205~0x20b
+    Enum_CAN_Motor_ID CAN_ID;
+    // 发送缓存区
+    uint8_t* CAN_Tx_Data;
+    // 减速比, 默认带减速箱
+    float Gearbox_Rate = 3591.0f / 187.0f;
+    // 最大扭矩, 需根据不同负载测量后赋值, 也就开环和扭矩环输出用得到, 不过我感觉应该没有奇葩喜欢开环输出这玩意
+    float Torque_Max = 16384.0f;
+
+    // 常量
+
+    // 一圈编码器刻度
+    uint16_t Encoder_Num_Per_Round = 8192;
+    // 最大输出扭矩
+    uint16_t Output_Max = 16384;
+
+    // 内部变量
+
+    // 当前时刻的电机接收flag
+    uint32_t Flag = 0;
+    // 前一时刻的电机接收flag
+    uint32_t Pre_Flag = 0;
+
+    // 接收的编码器位置, 0~8191
+    uint16_t Rx_Encoder = 0;
+    // 接收的速度, rpm
+    int16_t Rx_Omega = 0;
+    // 接收的扭矩, 目标的扭矩, -30000~30000
+    int16_t Rx_Torque = 0;
+    // 接收的温度, 摄氏度
+    uint16_t Rx_Temperature = 0;
+
+    // 之前的编码器位置
+    uint16_t Pre_Encoder = 0;
+    // 总编码器位置
+    int32_t Total_Encoder = 0;
+    // 总圈数
+    int32_t Total_Round = 0;
+
+    // 读变量
+
+    // 电机状态
+    Enum_CAN_Motor_Status CAN_Motor_Status = CAN_Motor_Status_DISABLE;
+
+    // 当前的角度, rad
+    float Now_Angle = 0.0f;
+    // 当前的速度, rad/s
+    float Now_Omega = 0.0f;
+    // 当前的扭矩, 直接采用反馈值
+    float Now_Torque = 0.0f;
+    // 当前的温度, 摄氏度
+    uint8_t Now_Temperature = 0;
+
+    // 写变量
+
+    // 读写变量
+
+    // 电机控制方式
+    Enum_Control_Method Control_Method = Control_Method_ANGLE;
+    // 目标的角度, rad
+    float Target_Angle = 0.0f;
+    // 目标的速度, rad/s
+    float Target_Omega = 0.0f;
+    // 目标的扭矩, 直接采用反馈值
+    float Target_Torque = 0.0f;
+    // 输出量
+    float Out = 0.0f;
+
+    // 内部函数
+
+    void Output();
+};
+#endif
+
+/* Exported variables --------------------------------------------------------*/
+
+/* Exported function declarations --------------------------------------------*/
 
 #endif
+
+/************************ COPYRIGHT(C) USTC-ROBOWALKER **************************/
