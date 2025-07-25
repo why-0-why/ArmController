@@ -149,8 +149,23 @@
       <recent name="D:\Documents\100Cache_repository\STM32F4\gas_valve_test\User\Task" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="OpenOCD 下载并运行.ClionTest">
+    <configuration name="ArmController" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ArmController" TARGET_NAME="ArmController" CONFIG_NAME="Debug-STM32" RUN_TARGET_PROJECT_NAME="ArmController" RUN_TARGET_NAME="ArmController">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FreeRTOS" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ArmController" TARGET_NAME="FreeRTOS" CONFIG_NAME="Debug-STM32">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="STM32_Drivers" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ArmController" TARGET_NAME="STM32_Drivers" CONFIG_NAME="Debug-STM32">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -163,6 +178,12 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="CMake 应用程序.ArmController" />
+      <item itemvalue="CMake 应用程序.FreeRTOS" />
+      <item itemvalue="CMake 应用程序.STM32_Drivers" />
+      <item itemvalue="OpenOCD 下载并运行.ClionTest" />
+    </list>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">

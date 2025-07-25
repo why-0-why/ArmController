@@ -10,26 +10,55 @@
 ## 文件架构
 
 - User:所有人为编写的文件
-  - cfg:config各类配置文件,包括dap下载器配置
+  - cfg:config各类配置文件，包括dap下载器配置
+  - Algorithm:算法层，pid算法，数学工具
+  - Drive:驱动层，can驱动，uart驱动
+  - Device:设备层，电机对象
+  - Task:任务层，FreeRTOS任务函数
+
+## C++开发框架（以Class_PID为例）
+
+文件架构如下
+
+- alg_pid.h:头文件，包含C的接口声明和类的声明
+- alg_pid.cpp:类的定义
+- alg_pid_capi.cpp:实现C的接口
+
+代码注意点
+
+头文件中预处理格式如下
+
+```c++
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+//C的接口声明（一般包含：前向声明，创建/销毁/初始化对象 ，类内类指针，类函数）
+
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+
+//类的声明
+
+#endif
+```
 
 ## CMakeLists修改
 
 ```cmake
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
-```
-
-```cmake
-enable_language(C CXX ASM)
-```
-
-```cmake
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         # Add user sources here
-        User/Task/ReadTask.c
-        User/Drive/drv_can.c
+        User/Algorithm/drv_math.cpp
+        User/Algorithm/alg_pid.cpp
+        User/Algorithm/alg_pid_capi.cpp
         User/Drive/drv_uart.c
+        User/Drive/drv_can.c
+        User/Task/ReadTask.c
+        User/Device/dvc_motor.cpp
+        User/Device/dvc_motor_capi.cpp
 )
 
 # Add include paths
