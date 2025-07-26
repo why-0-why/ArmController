@@ -51,7 +51,7 @@ extern "C" {
 ```cmake
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         # Add user sources here
-        User/Algorithm/drv_math.cpp
+        User/Drive/drv_math.cpp
         User/Algorithm/alg_pid.cpp
         User/Algorithm/alg_pid_capi.cpp
         User/Drive/drv_uart.c
