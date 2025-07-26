@@ -48,23 +48,26 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-        User/Algorithm/drv_math.cpp
+        User/Drive/drv_math.cpp
+        User/Drive/drv_can.c
+        User/Drive/drv_uart.c
+
         User/Algorithm/alg_pid.cpp
         User/Algorithm/alg_pid_capi.cpp
-        User/Drive/drv_uart.c
-        User/Drive/drv_can.c
-        User/Task/ReadTask.c
+
         User/Device/dvc_motor.cpp
         User/Device/dvc_motor_capi.cpp
+
+        User/Task/ReadTask.c
 
  )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+        User/Drive
         User/Algorithm
         User/Device
-        User/Drive
         User/Task
 )
 
