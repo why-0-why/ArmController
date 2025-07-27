@@ -14,7 +14,9 @@
   - Algorithm:算法层，pid算法，数学工具
   - Drive:驱动层，can驱动，uart驱动
   - Device:设备层，电机对象
-  - Task:任务层，FreeRTOS任务函数
+  - Task:任务层，FreeRTOS任务函数（在cubeMX中配置任务函数为虚函数）
+
+算法层和驱动层是底层组件，设备层调用算法层和驱动层实现设备对象，任务层操作设备对象，实现任务目标。
 
 ## C++开发框架（以Class_PID为例）
 
@@ -53,6 +55,7 @@ extern "C" {
 把用到的源文件放入target_sources()，把头文件路径放入target_include_directories()。
 
 ```cmake
+# Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         # Add user sources here
         User/Drive/drv_math.cpp
