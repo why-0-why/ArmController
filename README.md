@@ -18,8 +18,11 @@
 
 算法层和驱动层是底层组件，设备层调用算法层和驱动层实现设备对象，任务层操作设备对象，实现任务目标。
 
-## C++开发框架（以Class_PID为例）
+## C++开发注意点
 
+### 方法一：任务层用C++，无需任何修改，可直接运行
+
+### 方法二：任务层用C，各个设备类单独提供C接口（不推荐）
 文件架构如下
 
 - alg_pid.h:头文件，包含C的接口声明和类的声明
@@ -60,12 +63,10 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         # Add user sources here
         User/Drive/drv_math.cpp
         User/Algorithm/alg_pid.cpp
-        User/Algorithm/alg_pid_capi.cpp
         User/Drive/drv_uart.c
         User/Drive/drv_can.c
-        User/Task/ReadTask.c
+        User/Task/ReadTask.cpp
         User/Device/dvc_motor.cpp
-        User/Device/dvc_motor_capi.cpp
 )
 
 # Add include paths

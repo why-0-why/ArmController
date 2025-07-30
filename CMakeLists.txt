@@ -53,12 +53,11 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         User/Drive/drv_uart.c
 
         User/Algorithm/alg_pid.cpp
-        User/Algorithm/alg_pid_capi.cpp
 
         User/Device/dvc_motor.cpp
-        User/Device/dvc_motor_capi.cpp
 
-        User/Task/ReadTask.c
+
+        User/Task/ReadTask.cpp
 
  )
 

@@ -14,16 +14,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#ifdef __cplusplus
 #include "drv_math.h"
-#endif
 
 /* Exported macros -----------------------------------------------------------*/
 
 /* Exported types ------------------------------------------------------------*/
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * @brief 微分先行
@@ -35,52 +30,6 @@ enum Enum_PID_D_First
     PID_D_First_ENABLE,
 };
 
-/* 前向声明 */
-typedef struct Class_PID Class_PID;
-
-/* 创建/销毁/初始化对象 */
-Class_PID* Class_PID_Create();
-void Class_PID_Destory(Class_PID* pid);
-
-/* 类函数 */
-void Class_PID_Init(
-    Class_PID* pid,
-    float k_p,
-    float k_i,
-    float k_d,
-    float k_f,
-    float i_out_max,
-    float out_max,
-    float d_t,
-    float dead_zone,
-    float i_variable_speed_a,
-    float i_variable_speed_b,
-    float i_separate_threshold,
-    enum Enum_PID_D_First d_first);
-
-float PID_Get_Integral_Error(Class_PID* pid);
-float PID_Get_Out(Class_PID* pid);
-
-void PID_Set_K_P(Class_PID* pid, float k_p);
-void PID_Set_K_I(Class_PID* pid, float k_i);
-void PID_Set_K_D(Class_PID* pid, float k_d);
-void PID_Set_K_F(Class_PID* pid, float k_f);
-void PID_Set_I_Out_Max(Class_PID* pid, float i_out_max);
-void PID_Set_Out_Max(Class_PID* pid, float out_max);
-void PID_Set_I_Variable_Speed_A(Class_PID* pid, float i_variable_speed_a);
-void PID_Set_I_Variable_Speed_B(Class_PID* pid, float i_variable_speed_b);
-void PID_Set_I_Separate_Threshold(Class_PID* pid, float i_separate_threshold);
-void PID_Set_Target(Class_PID* pid, float target);
-void PID_Set_Now(Class_PID* pid, float now);
-void PID_Set_Integral_Error(Class_PID* pid, float integral_error);
-
-void PID_TIM_Adjust_PeriodElapsedCallback(Class_PID* pid);
-#ifdef __cplusplus
-}
-#endif
-
-#ifdef __cplusplus
-
 /**
  * @brief Reusable, PID算法
  *
@@ -88,10 +37,7 @@ void PID_TIM_Adjust_PeriodElapsedCallback(Class_PID* pid);
 class Class_PID
 {
 public:
-    void Init(float __K_P, float __K_I, float __K_D, float __K_F = 0.0f, float __I_Out_Max = 0.0f,
-              float __Out_Max = 0.0f, float __D_T = 0.001f, float __Dead_Zone = 0.0f, float __I_Variable_Speed_A = 0.0f,
-              float __I_Variable_Speed_B = 0.0f, float __I_Separate_Threshold = 0.0f,
-              Enum_PID_D_First __D_First = PID_D_First_DISABLE);
+    void Init(float __K_P, float __K_I, float __K_D, float __K_F = 0.0f, float __I_Out_Max = 0.0f, float __Out_Max = 0.0f, float __D_T = 0.001f, float __Dead_Zone = 0.0f, float __I_Variable_Speed_A = 0.0f, float __I_Variable_Speed_B = 0.0f, float __I_Separate_Threshold = 0.0f, Enum_PID_D_First __D_First = PID_D_First_DISABLE);
 
     float Get_Integral_Error();
     float Get_Out();
@@ -174,7 +120,7 @@ protected:
 
     //内部函数
 };
-#endif
+
 /* Exported variables --------------------------------------------------------*/
 
 /* Exported function declarations --------------------------------------------*/
