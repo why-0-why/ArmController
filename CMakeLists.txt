@@ -51,11 +51,12 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         User/Drive/drv_math.cpp
         User/Drive/drv_can.c
         User/Drive/drv_uart.c
+        User/Drive/drv_RefereeSystem.c
 
         User/Algorithm/alg_pid.cpp
+        USer/Algorithm/alg_crc.c
 
         User/Device/dvc_motor.cpp
-
 
         User/Task/ReadTask.cpp
 
@@ -68,6 +69,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         User/Algorithm
         User/Device
         User/Task
+        User/Protocol
 )
 
 # Add project symbols (macros)

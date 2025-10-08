@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "can.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -47,7 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+bool pidflag=1;//静态变量
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,11 +92,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CAN1_Init();
   MX_USART1_UART_Init();
   MX_TIM7_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  // HAL_TIM_Base_Start_IT(&htim7);
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
@@ -183,7 +186,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+  if (htim->Instance==TIM7)
+  {
+    HAL_GPIO_TogglePin(LED_B_GPIO_Port,LED_B_Pin);
+    pidflag=!pidflag;
+  }
   /* USER CODE END Callback 1 */
 }
 

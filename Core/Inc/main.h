@@ -32,7 +32,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "../../User/Task/ReadTask.h"
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -70,7 +70,7 @@ void Error_Handler(void);
 #define GasValve_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
-
+  extern bool pidflag;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
