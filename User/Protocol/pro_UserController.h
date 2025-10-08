@@ -6,6 +6,7 @@
 #define PRO_USERCONTROLLER_H
 #include <sys/_stdint.h>
 
+#pragma pack(push, 1)
 /*
  * @brief 自定义控制器信息包
  *
@@ -19,6 +20,11 @@ typedef struct
     uint8_t AngleOfJoint4[4];
     uint8_t AngleOfJoint5[4];
     uint8_t AngleOfJoint6[4];
+    uint8_t Button1:1;
+    uint8_t Button2:1;
+    uint8_t Button3:1;
+    uint8_t Button4:1;
 } user_package_t;
+#pragma pack(pop)
 
 #endif //PRO_USERCONTROLLER_H
