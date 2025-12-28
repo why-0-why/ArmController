@@ -58,6 +58,12 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Button_black_Pin GPIO_PIN_7
+#define Button_black_GPIO_Port GPIOI
+#define Button_orange_Pin GPIO_PIN_6
+#define Button_orange_GPIO_Port GPIOI
+#define Button_green_Pin GPIO_PIN_6
+#define Button_green_GPIO_Port GPIOC
 #define LED_R_Pin GPIO_PIN_12
 #define LED_R_GPIO_Port GPIOH
 #define LED_G_Pin GPIO_PIN_11
@@ -66,8 +72,12 @@ void Error_Handler(void);
 #define LED_B_GPIO_Port GPIOH
 #define KEY_Pin GPIO_PIN_0
 #define KEY_GPIO_Port GPIOA
+#define Button_J6_Pin GPIO_PIN_13
+#define Button_J6_GPIO_Port GPIOE
 #define GasValve_Pin GPIO_PIN_9
 #define GasValve_GPIO_Port GPIOE
+#define Button_red_Pin GPIO_PIN_14
+#define Button_red_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
   extern bool pidflag;
