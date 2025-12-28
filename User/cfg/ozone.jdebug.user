@@ -1,30 +1,29 @@
 
-GraphedExpression="(Joint3).Now_Angle", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#a00909
-GraphedExpression="(Joint1).Now_Angle", Color=#a00909
-GraphedExpression="(Joint2).Now_Angle", Color=#a00909
-OpenDocument="main.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Core/Src/main.c", Line=60
+GraphedExpression="(Package).AngleOfJoint3", Color=#a00909
+GraphedExpression="(Package).AngleOfJoint4", Color=#09a01b
+GraphedExpression="(Package).AngleOfJoint6", Color=#09a087
+OpenDocument="pro_UserController.h", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/User/Protocol/pro_UserController.h", Line=0
+OpenDocument="main.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Core/Src/main.c", Line=128
 OpenDocument="stm32f4xx_hal_gpio.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c", Line=370
 OpenDocument="port.c", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c", Line=203
-OpenDocument="ReadTask.cpp", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/User/Task/ReadTask.cpp", Line=47
+OpenDocument="ReadTask.cpp", FilePath="D:/Documents/100Cache_repository/STM32F4Project/ArmController/User/Task/ReadTask.cpp", Line=98
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=300, h=469, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=913, h=454, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=300, h=223, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=300, h=517, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=913, h=505, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=300, h=324, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Memory 1", DockArea=BOTTOM, x=3, y=0, w=625, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=913, h=238, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=913, h=336, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=463, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=BOTTOM, x=2, y=0, w=1054, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=0, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="812;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="853;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="867;0"
+OpenWindow="Timeline", DockArea=BOTTOM, x=2, y=0, w=1054, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=0, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="740;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="827;-69", CodeGraphLegendShown=0, CodeGraphLegendPosition="843;0"
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=415, h=651, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-TableHeader="Source Files", SortCol="File", SortOrder="DESCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[240;100;100;100;1211]
-TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (Joint3).Now_Angle";" (Joint1).Now_Angle";" (Joint2).Now_Angle"], ColWidths=[100;100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[168;100;102;110;102;110;100;110;110]
+TableHeader="Source Files", SortCol="File", SortOrder="DESCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[240;100;100;100;1382]
+TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (Package).AngleOfJoint3";" (Package).AngleOfJoint4";" (Package).AngleOfJoint6"], ColWidths=[100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[239;100;100;100;100;100;110;126;126]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[100;118;259]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[198;100;100;494]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[100;118;198]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[198;100;100;515]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[27;27;27;26]
-WatchedExpression="Joint1", Window=Watched Data 1
-WatchedExpression="Joint2", Window=Watched Data 1
-WatchedExpression="Joint3", Window=Watched Data 1
-WatchedExpression="Package", Window=Watched Data 1
-WatchedExpression="temp", RefreshRate=5, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
+WatchedExpression="Joint1", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
+WatchedExpression="Joint2", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
+WatchedExpression="Joint3", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
+WatchedExpression="Package", RefreshRate=5, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
