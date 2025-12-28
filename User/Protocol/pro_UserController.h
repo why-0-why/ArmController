@@ -14,16 +14,18 @@
  */
 typedef struct
 {
-    uint8_t AngleOfJoint1[4];
-    uint8_t AngleOfJoint2[4];
-    uint8_t AngleOfJoint3[4];
-    uint8_t AngleOfJoint4[4];
-    uint8_t AngleOfJoint5[4];
-    uint8_t AngleOfJoint6[4];
-    uint8_t Button1:1;
-    uint8_t Button2:1;
-    uint8_t Button3:1;
-    uint8_t Button4:1;
+    float AngleOfJoint1;
+    float AngleOfJoint2;
+    float AngleOfJoint3;
+    float AngleOfJoint4;
+    float AngleOfJoint5;
+    float AngleOfJoint6;
+    uint8_t Button_J6;
+    uint8_t Button_red;
+    uint8_t Button_green;
+    uint8_t Button_orange;
+    uint8_t Button_black;
+    uint8_t null_field;
 } user_package_t;
 #pragma pack(pop)
 
