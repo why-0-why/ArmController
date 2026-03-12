@@ -19,7 +19,7 @@ uint8_t* float_To_uint8_t(float fnum);
 Class_Motor_C610 Joint1;
 Class_Motor_C610 Joint2;//有减速
 Class_Motor_C610 Joint3;//有减速
-Class_Motor_C620 Joint4;
+Class_Motor_C620 Joint4;//有减速
 Class_Motor_C610 Joint5;
 Class_Motor_C610 Joint6;
 
@@ -29,6 +29,8 @@ bool buttongre_flag = false;
 bool buttonora_flag = false;
 bool buttonbla_flag = false;
 
+bool zero_flag[6] = {false,false,false,false,false,false};
+float zero_rad[6] = {0,0,0,0,0,0};
 /*
  * @brief 自定义控制器信息包
  */
@@ -46,31 +48,61 @@ void CAN_Motor_Call_Back(Struct_CAN_Rx_Buffer* Rx_Buffer)
     case (0x201):
         {
             Joint1.CAN_RxCpltCallback(Rx_Buffer->Data);
+            if (zero_flag[0] == false)
+            {
+                zero_rad[0] = Joint1.Get_Now_Angle()*36.0f;//2006无减速器
+                zero_flag[0] = true;
+            }
         }
         break;
     case (0x202):
         {
             Joint2.CAN_RxCpltCallback(Rx_Buffer->Data);
+            if (zero_flag[1] == false)
+            {
+                zero_rad[1] =Joint2.Get_Now_Angle();//2006有减速器
+                zero_flag[1] = true;
+            }
         }
         break;
     case (0x203):
         {
             Joint3.CAN_RxCpltCallback(Rx_Buffer->Data);
+            if (zero_flag[2] == false)
+            {
+                zero_rad[2]=Joint3.Get_Now_Angle();//2006有减速器
+                zero_flag[2] = true;
+            }
         }
         break;
     case (0x204):
         {
             Joint4.CAN_RxCpltCallback(Rx_Buffer->Data);
+            if (zero_flag[3] == false)
+            {
+                zero_rad[3]=Joint4.Get_Now_Angle();//2006有减速器
+                zero_flag[3] = true;
+            }
         }
         break;
     case (0x205):
         {
             Joint5.CAN_RxCpltCallback(Rx_Buffer->Data);
+            if (zero_flag[4] == false)
+            {
+                zero_rad[4] =Joint5.Get_Now_Angle();//2006有减速器
+                zero_flag[4] = true;
+            }
         }
         break;
     case (0x206):
         {
             Joint6.CAN_RxCpltCallback(Rx_Buffer->Data);
+            if (zero_flag[5] == false)
+            {
+                zero_rad[5] =Joint6.Get_Now_Angle()*36.0f;//2006无减速器
+                zero_flag[5] = true;
+            }
         }
         break;
     default:
@@ -103,13 +135,12 @@ void StartReadTask(void const* argument)
     Joint4.Init(&hcan1,CAN_Motor_ID_0x204,Control_Method_ANGLE);
     for (;;)
     {
-
-        Package.AngleOfJoint1 = Joint1.Get_Now_Angle()*36.0f;//2006无减速器
-        Package.AngleOfJoint2 =Joint2.Get_Now_Angle();//2006有减速器
-        Package.AngleOfJoint3 =-Joint3.Get_Now_Angle();//2006有减速器
-        Package.AngleOfJoint4 =-Joint4.Get_Now_Angle()* 3591.0f / 187.0f;//3508无减速器
-        Package.AngleOfJoint5 =Joint5.Get_Now_Angle()*36.0f;//2006无减速器
-        Package.AngleOfJoint6 =Joint6.Get_Now_Angle()*36.0f;//2006无减速器
+        Package.AngleOfJoint1 = Joint1.Get_Now_Angle()*36.0f-zero_rad[0];//2006无减速器
+        Package.AngleOfJoint2 =-(Joint2.Get_Now_Angle()-zero_rad[1]);//2006有减速器
+        Package.AngleOfJoint3 =Joint3.Get_Now_Angle()-zero_rad[2];//2006有减速器
+        Package.AngleOfJoint4 =-(Joint4.Get_Now_Angle()-zero_rad[3]);//2006有减速器
+        Package.AngleOfJoint5 =Joint5.Get_Now_Angle()-zero_rad[4];//2006有减速器
+        Package.AngleOfJoint6 =-(Joint6.Get_Now_Angle()*36.0f-zero_rad[5]);//2006无减速器
 
         //清楚按键标志位
         Package.Button_J6 = 0;
@@ -175,7 +206,7 @@ void StartReadTask(void const* argument)
             buttonbla_flag=false;
 
         //发送数据
-        UART_Send_Data(&huart6,referee_pack_data(CUSTOM_ROBOT_DATA_CMD_ID,(uint8_t*)&Package,30),getRefSentDataLen());
+        UART_Send_Data(&huart1,referee_pack_data(CUSTOM_ROBOT_DATA_CMD_ID,(uint8_t*)&Package,30),getRefSentDataLen());
 
         HAL_GPIO_TogglePin(LED_B_GPIO_Port, LED_B_Pin);
         osDelay(40);//25hz
