@@ -7,6 +7,7 @@ extern "C"{
 #include "drv_can.h"
 #include "drv_uart.h"
 #include "drv_RefereeSystem.h"
+#include "DMdrv.h"
 }// C实现函数，只要用到C函数就要extern，否则编译器会认为这是两个函数，因为Cpp编译器给函数的命名与C编译器给函数命名不一样
 #include "dvc_motor.h"
 #include "pro_UserController.h"
@@ -22,6 +23,8 @@ Class_Motor_C610 Joint3;//有减速
 Class_Motor_C620 Joint4;//有减速
 Class_Motor_C610 Joint5;
 Class_Motor_C610 Joint6;
+motor_t Grab;
+float posset=0;
 
 bool buttonJ6_flag = false;
 bool buttonred_flag = false;
@@ -45,6 +48,10 @@ void CAN_Motor_Call_Back(Struct_CAN_Rx_Buffer* Rx_Buffer)
 {
     switch (Rx_Buffer->Header.StdId)
     {
+    case (0x000):
+        {
+            dm4310_fbdata(&Grab, Rx_Buffer->Data);
+        }
     case (0x201):
         {
             Joint1.CAN_RxCpltCallback(Rx_Buffer->Data);
@@ -133,6 +140,8 @@ void StartReadTask(void const* argument)
     Joint2.Init(&hcan1,CAN_Motor_ID_0x202,Control_Method_ANGLE);
     Joint3.Init(&hcan1,CAN_Motor_ID_0x203,Control_Method_ANGLE);
     Joint4.Init(&hcan1,CAN_Motor_ID_0x204,Control_Method_ANGLE);
+    osDelay(1000);
+    COMM_DM4310EnableMotor();
     for (;;)
     {
         Package.AngleOfJoint1 = Joint1.Get_Now_Angle()*36.0f-zero_rad[0];//2006无减速器
@@ -164,6 +173,7 @@ void StartReadTask(void const* argument)
         //red
         if (HAL_GPIO_ReadPin(Button_red_GPIO_Port, Button_red_Pin) == GPIO_PIN_SET)//10ms消抖
         {
+            posset=posset+0.005;
             if (buttonred_flag == true)
                 Package.Button_red = true;
             else
@@ -175,6 +185,7 @@ void StartReadTask(void const* argument)
         //gre
         if (HAL_GPIO_ReadPin(Button_green_GPIO_Port, Button_green_Pin) == GPIO_PIN_SET)//10ms消抖
         {
+            posset=posset-0.005;
             if (buttongre_flag == true)
                 Package.Button_green = true;
             else
@@ -209,7 +220,8 @@ void StartReadTask(void const* argument)
         UART_Send_Data(&huart1,referee_pack_data(CUSTOM_ROBOT_DATA_CMD_ID,(uint8_t*)&Package,30),getRefSentDataLen());
 
         HAL_GPIO_TogglePin(LED_B_GPIO_Port, LED_B_Pin);
-        osDelay(40);//25hz
+        mit_ctrl(posset,0,10,0.6,0);
+        osDelay(1000/30+1);//30hz
     }
 }
 
